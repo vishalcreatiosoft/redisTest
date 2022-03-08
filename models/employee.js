@@ -23,6 +23,10 @@ const employeSchema = new Schema({
         type: String,
         trim: true,
     },
+    password: {
+        type: String,
+        trim: true,
+    },
     date: {
         type: Date,
         default: Date.now
