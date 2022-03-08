@@ -2,6 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const empController = require('../controller/employee-controller');
 const bcrypt = require('bcrypt');
+const authorise = require('../middleware/authorise');
 
 
 // Route-1 Landing page
@@ -33,7 +34,7 @@ router.post('/register/employee', async(req, res) => {
 });
 
 // Route 3 ##### Get Employee Data 
-router.get('/getEmployeeData', async(req, res) => {
+router.get('/getEmployeeData', authorise, async(req, res) => {
 
     const email = req.body.email;
     const result = await empController.getData(email);

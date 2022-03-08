@@ -51,7 +51,7 @@ employees.loginData = async(data) => {
         const getData = await Employee.findOne({ email: data.email });
         if (getData) {
             const matchpassword = await bcrypt.compare(data.password, getData.password);
-            console.log(matchpassword);
+            //console.log(matchpassword);
             if (matchpassword) {
 
                 //generating jwt token
