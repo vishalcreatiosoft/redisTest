@@ -1,6 +1,8 @@
 const Employee = require('../models/employee');
 const redis = require('redis');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { get } = require('http');
 
 const employees = {};
 const client = redis.createClient();
@@ -51,7 +53,20 @@ employees.loginData = async(data) => {
             const matchpassword = await bcrypt.compare(data.password, getData.password);
             console.log(matchpassword);
             if (matchpassword) {
-                return { success: true, msg: 'Logged in successfully' };
+
+                //generating jwt token
+                const privatekey = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const params = {
+                    firstName: getData.firstName,
+                    lastName: getData.lastName,
+                    mobile: getData.mobile,
+                    city: getData.city,
+                    mobile: getData.mobile
+                }
+
+                const token = await jwt.sign(params, privatekey, { expiresIn: '24h' });
+                //console.log(token);
+                return { success: true, msg: 'Logged in successfully', token: token };
             } else {
                 return { success: false, msg: 'Invalid Password' };
             }
