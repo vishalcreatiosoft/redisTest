@@ -9,5 +9,23 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "redis": "^4.0.4"
-  }
+  },
+  "name": "redistest",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishalcreatiosoft/redisTest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vishalcreatiosoft/redisTest/issues"
+  },
+  "homepage": "https://github.com/vishalcreatiosoft/redisTest#readme"
 }
