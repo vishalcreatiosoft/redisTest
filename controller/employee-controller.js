@@ -3,6 +3,7 @@ const redis = require('redis');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { get } = require('http');
+require('dotenv').config();
 
 const employees = {};
 const client = redis.createClient();
@@ -55,7 +56,7 @@ employees.loginData = async(data) => {
             if (matchpassword) {
 
                 //generating jwt token
-                const privatekey = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const privatekey = process.env.privatekey;
                 const params = {
                     firstName: getData.firstName,
                     lastName: getData.lastName,
@@ -64,7 +65,7 @@ employees.loginData = async(data) => {
                     mobile: getData.mobile
                 }
 
-                const token = await jwt.sign(params, privatekey, { expiresIn: '24h' });
+                const token = await jwt.sign(params, privatekey, { expiresIn: '1000s' });
                 //console.log(token);
                 return { success: true, msg: 'Logged in successfully', token: token };
             } else {
