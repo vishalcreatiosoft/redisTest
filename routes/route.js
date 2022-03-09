@@ -7,9 +7,9 @@ require('../middleware/passports')(passport);
 //const authorise = require('../middleware/authorise');
 
 
+
 // Route-1 Landing page
 router.get('/', (req, res) => {
-    localStorage.setItem('name', 'doremon');
     res.send('working from route');
 });
 
