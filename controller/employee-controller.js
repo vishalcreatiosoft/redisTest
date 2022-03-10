@@ -30,9 +30,10 @@ employees.saveData = async(data) => {
 }
 
 //function to get the employee data.
-employees.getData = async(email) => {
+employees.getData = async(username) => {
     try {
-        const empData = await Employee.findOne({ email: email });
+        const empData = await Employee.findOne({ username: username });
+        console.log(empData);
         const size = Object.keys(empData).length;
         if (size > 0) {
             const empName = await client.get('username');
@@ -65,8 +66,9 @@ employees.loginData = async(data) => {
                     mobile: getData.mobile
                 }
 
-                const token = await jwt.sign(params, privatekey, { expiresIn: '1000s' });
+                const token = await jwt.sign(params, privatekey, { expiresIn: '1000' });
                 //console.log(token);
+                const saveToken = await client.setEx('token', 1000, `${token}`);
                 return { success: true, msg: 'Logged in successfully', token: token };
             } else {
                 return { success: false, msg: 'Invalid Password' };

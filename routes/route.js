@@ -3,15 +3,22 @@ const router = new express.Router();
 const empController = require('../controller/employee-controller');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-require('../middleware/passports')(passport);
+//require('../middleware/passports')(passport);
 //const authorise = require('../middleware/authorise');
+
+require('../middleware/local-auth')(passport);
+
 
 
 
 // Route-1 Landing page
 router.get('/', (req, res) => {
-    res.send('working from route');
+    res.send('Not authenticated Employee');
 });
+
+router.get('/home', passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
+    res.send('Authenticated Employee home page');
+})
 
 // Route 2 ##### Register Employee  
 router.post('/register/employee', async(req, res) => {
@@ -24,10 +31,10 @@ router.post('/register/employee', async(req, res) => {
     const data = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email: req.body.email,
         mobile: req.body.mobile,
         city: req.body.city,
-        password: password
+        username: req.body.username,
+        password: req.body.password
     }
 
     const result = await empController.saveData(data);
@@ -37,10 +44,24 @@ router.post('/register/employee', async(req, res) => {
 });
 
 // Route 3 ##### Get Employee Data 
-router.get('/getEmployeeData', passport.authenticate('jwt', { session: false }), async(req, res) => {
+// router.get('/getEmployeeData', passport.authenticate('jwt', { session: false }), async(req, res) => {
 
-    const email = req.body.email;
-    const result = await empController.getData(email);
+//     const username = req.body.username;
+//     const result = await empController.getData(email);
+//     if (result.success === true) {
+//         res.status(200);
+//         res.json(result);
+//     } else {
+//         res.status(401);
+//         res.json(result);
+//     }
+
+// });
+
+router.get('/getEmployeeData', passport.authenticate('local', { failureRedirect: '/' }), async(req, res) => {
+
+    const username = req.body.username;
+    const result = await empController.getData(username);
     if (result.success === true) {
         res.status(200);
         res.json(result);
@@ -48,28 +69,62 @@ router.get('/getEmployeeData', passport.authenticate('jwt', { session: false }),
         res.status(401);
         res.json(result);
     }
-    // console.log(email);
-    // res.json({ success: true, result: email })
+
 });
 
 
+
+router.get('/login',
+    passport.authenticate('local', { failureRedirect: '/' }),
+    (req, res) => {
+        res.redirect('/home');
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Route 3 ##### Login Employee 
-router.get('/login', async(req, res) => {
+// router.get('/login', async(req, res) => {
 
-    const data = {
-        email: req.body.email,
-        password: req.body.password
-    }
-    const result = await empController.loginData(data);
-    if (result.success) {
-        res.status(200);
-        res.json(result);
-    } else {
-        res.status(401);
-        res.json(result);
-    }
+//     const data = {
+//         email: req.body.email,
+//         password: req.body.password
+//     }
+//     const result = await empController.loginData(data);
+//     if (result.success) {
+//         res.status(200);
+//         res.json(result);
+//     } else {
+//         res.status(401);
+//         res.json(result);
+//     }
 
-})
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Route-4 ###### About Us
 router.get('/aboutUs', passport.authenticate('jwt', { session: false }), async(req, res) => {

@@ -10,11 +10,6 @@ const employeSchema = new Schema({
         type: String,
         trim: true,
     },
-    email: {
-        type: String,
-        trim: true,
-        unique: true
-    },
     mobile: {
         type: Number,
         trim: true,
@@ -22,6 +17,11 @@ const employeSchema = new Schema({
     city: {
         type: String,
         trim: true,
+    },
+    username: {
+        type: String,
+        trim: true,
+        unique: true
     },
     password: {
         type: String,
